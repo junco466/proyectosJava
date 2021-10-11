@@ -1,12 +1,10 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Club {
 
     static ArrayList<Socio> socios = new ArrayList<Socio>();
     static Scanner input = new Scanner(System.in);
-
 
     static int verificarSocio(int cedula){
 
@@ -40,7 +38,6 @@ public class Club {
         }
         return -1;
     }
-
 
     static void afiliarSocio(int cedula){
         int flag = verificarSocio(cedula);
@@ -76,7 +73,6 @@ public class Club {
         }
     }
 
-
     public static void registrarAfiliado(int cedula){
         
         int ind = verificarSocio(cedula);
@@ -93,38 +89,14 @@ public class Club {
         }
     }
 
-
-    public static void eliminarAfiliado(int cedula){
-        
-        int ind = verificarSocio(cedula);
-
-        if (ind != -1){
-
-            System.out.println("ingrese el nombre del afiliado: ");
-            String nombre = input.nextLine();
-            input.nextLine();
-            socios.get(ind).removerAfiliado(nombre);
-        
-        }else{
-            System.out.println("No hay socio registrado con esta identificacion");
-        }
-
-    }
-
-
-    public static void aumentarFondos(int cedula){
-        
-        int valor;
+    public static void aumentarFondos(int cedula, int valor){
         int ind = verificarSocio(cedula);
         if (ind != -1){
-            System.out.println("Ingrese la cantidad que desea consignar a la cuenta: ");
-            valor = input.nextInt(); 
             socios.get(ind).setFondos(valor);
         }else{
             System.out.println("No hay socio registrado con esta identificacion");
         }
     }
-
 
     public static boolean EliminarSocio(int cedula){
         
@@ -142,7 +114,7 @@ public class Club {
             }else{ 
                 
                 if(socio.getAfiliados().size() <= 1){
-                    if (socio.getFacturasSocio().size() !=0 && socio.verFacturasAfiliado()){
+                    if (socio.getFacturasSocio().size() !=0 && socio.getFacturasAfiliado().size() !=0){
                         socios.remove(ind);
                         return true;
                     }else{
@@ -162,78 +134,30 @@ public class Club {
         return false;
     }
 
-
     public static void consumo(int cedula){
 
         int ind = verificarSocio(cedula);
 
         if (ind != -1){
 
-            System.out.println("Valor de consumo: ");
-            int valor = input.nextInt();
-
-            System.out.println("Nombre del cliente: ");
-            String nombre = input.nextLine();
+            System.out.println("¿El comprador es Afiliado o Socio?");
+            boolean afiliado = input.nextBoolean();
             input.nextLine();
 
             System.out.println("Concepto de consumo: ");
             String concepto = input.nextLine();
             input.nextLine();
 
-            socios.get(ind).nuevaFactura(concepto, valor, nombre);
+            System.out.println("Valor de consumo: ");
+            int valor = input.nextInt();
+
+            System.out.println("Nombre: ");
+            String nombre = input.nextLine();
+            input.nextLine();
         }else{
             System.out.println("NO hay ningun socio registrado con esta identificacion");
         }
 
     }
 
-
-    public static void pagarConsumo(int cedula){
-        
-        int ind = verificarSocio(cedula);
-        String op;
-
-        if (ind != -1){
-
-            LinkedList<Afiliado> afiliados = new LinkedList<Afiliado>();
-            afiliados = socios.get(ind).getAfiliados();
-
-
-            System.out.println("A CONTINUACION PODRA VER LAS FACTURAS, EN OREDEN DE CREACION: ");
-
-            for (Factura i: socios.get(ind).getFacturasSocio()){
-                i.mostrarInfo();
-                System.out.println("¿Desea pagar esta factura? (SI/NO)");
-                op = input.nextLine().toLowerCase();
-
-                if(op.charAt(0) == 's'){
-                    System.out.println("");
-                    socios.get(ind).pagarFactura();
-                    return;
-                }else if(op.charAt(0) == 'n'){
-                    System.out.println("");
-                }
-            }
-
-            for (Afiliado i: afiliados){
-                for (Factura j: i.getFacturas()){
-
-                    j.mostrarInfo();
-                    System.out.println("¿Desea pagar esta factura? (SI/NO)");
-                    op = input.nextLine().toLowerCase();
-
-                    if(op.charAt(0) == 's'){
-                        System.out.println("");
-                        socios.get(ind).pagarFactura();
-                        return;
-                    }else if(op.charAt(0) == 'n'){
-                        System.out.println("");
-                    }
-                }
-            }
-
-        }else{
-            System.out.println("NO hay ningun socio registrado con esta identificacion");
-        } 
-    }
 }
