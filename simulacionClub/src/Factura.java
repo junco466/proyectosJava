@@ -1,10 +1,10 @@
 public class Factura {
 
     private String concepto;
-    private float valor;
+    private int valor;
     private String nombre;
     
-    public Factura(String concept, float value, String name){
+    public Factura(String concept, int value, String name){
         this.concepto = concept;
         this.valor = value;
         this.nombre = name;
@@ -18,11 +18,11 @@ public class Factura {
         this.concepto = concepto;
     }
 
-    public float getValor() {
+    public int getValor() {
         return valor;
     }
 
-    public void setValor(float valor) {
+    public void setValor(int valor) {
         this.valor = valor;
     }
 
@@ -35,9 +35,9 @@ public class Factura {
     }
 
     public void mostrarInfo(){
-        System.out.print("Nombre: " + nombre);
-        System.out.println("Concepto: " + concepto);
-        System.out.println("Valor: " + valor);
+        System.out.println("Nombre: " + this.nombre);
+        System.out.println("Concepto: " + this.concepto);
+        System.out.println("Valor: " + this.valor);
     }
     
 }

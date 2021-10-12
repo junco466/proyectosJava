@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.Scanner;
 //import java.util.Collections; 
 
 public class Socio {
@@ -29,27 +30,38 @@ public class Socio {
     }
 
 
-    public void nuevaFactura(String concepto, int valor, String nombre){
+    public void nuevaFactura(String concepto, int valor, String name){
         
-        this.totalDeuda = this.totalDeuda + valor;
-
-        if (this.totalDeuda < this.fondos){
+        int temp = 0;
+        temp = this.totalDeuda + valor;
+        //System.out.println("Deuda total = " + totalDeuda);
+        if (temp < this.fondos){
             
-            if (nombre == this.nombre){
+            //System.out.println("total deuda < fondos");
+            //System.out.println("name: " + name);
+            //System.out.println("this.nombre: "+ this.nombre);
 
+            if (name.equals(this.nombre)){
+
+                //System.out.println("agregue facura correctamente");
                 Factura factura = new Factura(concepto, valor, this.nombre);
                 facturas.add(factura);
+                this.totalDeuda = temp;
+                System.out.println("La factura se genero satisfactoriamente");
+                
 
             }else{
 
                 for (Afiliado i : afiliados){
-                    if (i.getNombre() == nombre){
+                    //System.out.println("entre facturas afiliados");
+                    if (name.equals(i.getNombre())){
+                        //System.out.println("cargue factura afiliado");
                         i.facturaAfiliado(concepto, valor);
-                        break;
-                    }else{
-                        System.out.println("Este nombre no corresponde a ninguna persona registrada bajo esta cedula");
+                        this.totalDeuda = temp;
+                        return;
                     }
                 }
+                System.out.println("Este nombre no corresponde a ninguna persona registrada bajo esta cedula");
             }
 
         }else{
@@ -59,8 +71,32 @@ public class Socio {
     } 
 
     
-    public void pagarFactura(/*int Valor, String nombre*/){
+    public boolean pagarFacturaSocio(){
 
+        char op;
+        Scanner input = new Scanner(System.in);
+
+        //System.out.println("estoy entrando en pagar factura socio");
+
+        for (Factura n: facturas){
+            n.mostrarInfo();
+            System.out.println("¿Desea pagar esta factura? (SI/NO)");
+            op = input.nextLine().toLowerCase().charAt(0);
+
+            if(op == 's'){
+                System.out.println("");
+                this.totalDeuda = this.totalDeuda - n.getValor();
+                facturas.remove(n);
+                System.out.println("Se pago satisfactoriamente la factura, y sera ramovida");
+                //input.close();
+                return true;
+            }else{
+                System.out.println("");
+            }
+        }
+        //input.close();
+        return false;
+    
     }
 
 
@@ -78,9 +114,10 @@ public class Socio {
     public void removerAfiliado(String nombre){
 
         for (Afiliado i : afiliados){
-            if (nombre == i.getNombre()){
+            if (nombre.equals(i.getNombre())){
                 if (i.getFacturas().size() == 0){
                     afiliados.remove(i);
+                    System.out.println("Se elimino el afiliado correctamente de la lista del socio");
                 }else{
                     System.out.println("El afiliado tiene facturas por pagar.");
                 }
@@ -91,11 +128,32 @@ public class Socio {
     }
 
 
+    public void setFondos(int valor){
+        if(this.vip){
+            int total = valor + this.fondos;
+            if (this.fondos < 5000000 && total < 5000000){
+                this.fondos = total;
+            }else{
+                System.out.println("Rebaso la capacidad maxima");
+            }
+        }else{
+            int total = valor + this.fondos;
+            if (this.fondos < 1000000 && total < 1000000){
+                this.fondos = total;
+            }else{
+                System.out.println("Rebaso la capacidad maxima");
+            }
+        }
+    }
+
+
     public boolean verFacturasAfiliado(){
 
-        for (Afiliado i : afiliados){
-            if (i.getFacturas().size() != 0){
-                return false;
+        if (afiliados.size() != 0){
+            for (Afiliado i : afiliados){
+                if (i.getFacturas().size() != 0){
+                    return false;
+                }
             }
         }
         return true;
@@ -115,25 +173,6 @@ public class Socio {
     public int getFondos() {
         return fondos;
     }
-
-
-    public void setFondos(int valor){
-        if(this.vip){
-            int total = valor + this.fondos;
-            if (this.fondos < 5000000 && total < 5000000){
-                this.fondos = total;
-            }else{
-                System.out.println("Capacidad maxima");
-            }
-        }else{
-            int total = valor + this.fondos;
-            if (this.fondos < 1000000 && total < 1000000){
-                this.fondos = total;
-            }else{
-                System.out.println("Capacidad maxima");
-            }
-        }
-    };
 
 
     public long getCedula() {
@@ -176,5 +215,14 @@ public class Socio {
     }
 
 
+    public int getTotalDeuda() {
+        return totalDeuda;
+    }
+
+
+    public void setTotalDeuda(int totalDeuda) {
+        this.totalDeuda = totalDeuda;
+    }   
+     
 }
    
