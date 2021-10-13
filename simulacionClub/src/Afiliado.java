@@ -21,8 +21,6 @@ public class Afiliado {
         char op;
         Scanner input = new Scanner(System.in);
 
-        System.out.println("estoy entrando en pagar factura afiliado");
-
         for (Factura i: facturas){
             i.mostrarInfo();
             System.out.println("¿Desea pagar esta factura? (SI/NO)");

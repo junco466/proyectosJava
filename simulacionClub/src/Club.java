@@ -8,41 +8,20 @@ public class Club {
     static Scanner input = new Scanner(System.in);
 
 
-    static int verificarSocio(int cedula){
+    public static int verificarSocio(int cedula){
 
-        //flag = true;
         if (socios != null || socios.size() != 0){
             for (int i=0; i < socios.size(); i++){
                 if (socios.get(i).getCedula() == cedula){
-                    //bvip = false;
                     return i;
                 }
             }
-            // for (Regular i: regulares){
-            //     if (i.getCedula() == cedula){
-            //         flag = false;
-            //         break;
-            //     }
-            // }
-        // }else if (vip != null || vip.size() != 0){
-        //     for (int i=0; i < vip.size(); i++){
-        //         if (vip.get(i).getCedula() == cedula){
-        //             bvip = true;
-        //             return i;
-        //         }
-        //     }
-            // for (VIP i: vip){
-            //     if (i.getCedula() == cedula){
-            //         flag = false;
-            //         break;
-            //     }
-            // }
         }
         return -1;
     }
 
 
-    static void afiliarSocio(int cedula){
+    public static void afiliarSocio(int cedula){
         int flag = verificarSocio(cedula);
 
         if (flag == -1){
@@ -118,7 +97,8 @@ public class Club {
         if (ind != -1){
             System.out.println("Ingrese la cantidad que desea consignar a la cuenta: ");
             valor = input.nextInt(); 
-            socios.get(ind).setFondos(valor);
+            input.nextLine();
+            socios.get(ind).setFondos(socios.get(ind).getFondos() + valor);
             System.out.println("Se ingresaron " + valor + " pesos, satisfactoriamente");
         }else{
             System.out.println("No hay socio registrado con esta identificacion");
